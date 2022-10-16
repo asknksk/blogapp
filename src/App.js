@@ -1,10 +1,14 @@
-import './App.css';
+import { ToastContainer } from "react-toastify";
+import AppRouter from "./router/AppRouter";
 
+import { Provider } from 'react-redux'
+import store from './store'
 function App() {
   return (
-    <div className="App">
-     react
-    </div>
+    <Provider store={store}>
+      <ToastContainer />
+      <AppRouter />
+      </Provider>
   );
 }
 
