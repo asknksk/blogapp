@@ -1,35 +1,35 @@
 export const navbarDropdownConstants = [
-    {
-      id: 1,
-      title: "Anasayfa",
-      icon: null,
-      link: "/",
-    },
-  
-    {
-      id: 2,
-      title: "Chat",
-      icon: null,
-      link: "/",
-    },
-    {
-      id: 3,
-      title: "Puanlar",
-      icon: null,
-      link: "/",
-    },
-  
-    {
-      id: 4,
-      title: "Sınıfım",
-      icon: null,
-      link: "/chat",
-    },
-    
-    {
-      id: 11,
-      title: "Çıkış yap",
-      icon: null,
-      link: "/login",
-    },
-  ];
+  //! TODO if not user 1,2 if user others
+  {
+    id: 1,
+    title: "Register",
+    icon: null,
+    link: "/",
+  },
+
+  {
+    id: 2,
+    title: "Login",
+    icon: null,
+    link: "/",
+  },
+  {
+    id: 3,
+    title: "Logout",
+    icon: null,
+    link: "/",
+  },
+
+  {
+    id: 4,
+    title: "My Blogs",
+    icon: null,
+    link: "/chat",
+  },
+  {
+    id: 4,
+    title: "Change Password",
+    icon: null,
+    link: "/chat",
+  },
+];

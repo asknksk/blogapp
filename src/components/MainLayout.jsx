@@ -30,14 +30,6 @@ const MainLayout = ({ children, pageType, ...props }) => {
     };
   }, []);
 
-  const handleLogout = (e) => {
-    e.preventDefault();
-
-    // TODO: logout api yazildiktan sonra asagidaki yorum satirilari kaldirilacak
-    //  const token = JSON.parse(localStorage.getItem("loginCredentials")).result
-    //    .token;
-    //dispatch(logoutUser({ token, navigate }));
-  };
 
   if (loading) {
     return <DefaultSpinner />;
@@ -53,24 +45,8 @@ const MainLayout = ({ children, pageType, ...props }) => {
     >
       <nav className="bg-indigo-400 flex items-center justify-between py-4 px-6 rounded-md shadow-md">
         <Link to="/" className="">MyBlog</Link>
-        <ul className="hidden lg:flex gap-x-12">
-          <li>
-            <Link to="/">Anasayfa</Link>
-          </li>
-          <li>
-            <Link to="/">Chat</Link>
-          </li>
-          <li>
-            <Link to="/">Puanlar</Link>
-          </li>
-          <li>
-            <Link to="/">Sınıfım </Link>
-          </li>
-          <li>
-            <Link to="/">Eğitim</Link>
-          </li>
-        </ul>
-        <div className="flex items-center gap-x-6 lg:hidden">
+        
+        <div className="flex items-center gap-x-6 tablet:hidden">
           <div
             className="space-y-1 cursor-pointer"
             onClick={() => {
@@ -99,7 +75,7 @@ const MainLayout = ({ children, pageType, ...props }) => {
             toggleDropdown={toggleDropdown}
           />
         </div>
-        <ul className="hidden lg:flex gap-x-12">
+        <ul className="hidden tablet:flex gap-x-12">
           <li>
             <Link to="/">Register</Link>
           </li>
@@ -112,9 +88,7 @@ const MainLayout = ({ children, pageType, ...props }) => {
       <main className="flex-1 flex items-center justify-center">
         {children}
       </main>
-      <footer>
-        footer
-      </footer>
+     
     </div>
   );
 };
