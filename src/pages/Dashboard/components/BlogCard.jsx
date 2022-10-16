@@ -3,7 +3,7 @@ import React from "react";
 const AllBlogs = () => {
   return (
     <div className="flex flex-col border border-green-400 max-h-80">
-      <img src="" alt="blog-image" />
+      <img src="" alt="blog" />
       <div className="flex flex-col">
         <h4>Blog Title</h4>
         <p>Datetime</p>
