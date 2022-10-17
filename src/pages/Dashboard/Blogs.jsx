@@ -1,35 +1,37 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import BlogCard from "./components/BlogCard";
-import axios from "axios"
-const baseUrl = process.env.REACT_APP_BASE_URL
-const Blogs = () => {
+import axios from "axios";
+import DefaultSpinner from "../../components/DefaultSpinner";
 
-  var config = {
-    method: 'get',
-    url: 'http://127.0.0.1:8000/blog/blog/',
-    headers: { 
-      'Cookie': 'csrftoken=BnJ9MyP9GgXqec3Mdb3Qrf979jMi7Pov; sessionid=7609xuxjxoz1q1co1wdnflf0k725zzpi'
+const baseUrl = process.env.REACT_APP_BASE_URL;
+
+const Blogs = () => {
+  const [loading, setLoading] = useState(false);
+  const [blogData, setblogData] = useState([]);
+
+  const blogs = async () => {
+    setLoading(true);
+    try {
+      const res = await axios.get(`${baseUrl}blog/blog/`);
+      setblogData(res.data);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
     }
   };
-  
-  axios(config)
-  .then(function (response) {
-    console.log(response.data);
-  })
-  .catch(function (error) {
-    console.log(error);
-  });
+  useEffect(() => {
+    blogs();
+  }, []);
+
+  if (loading) {
+    return <DefaultSpinner />;
+  }
   return (
     <div className="flex gap-2 mt-4 flex-wrap items-center justify-center">
-      <BlogCard />
-      <BlogCard />
-      <BlogCard />
-      <BlogCard />
-      <BlogCard />
-      <BlogCard />
-      <BlogCard />
-      <BlogCard />
-      <BlogCard />
+      {blogData?.map((blog,idx) => {
+        return <BlogCard key={idx} blog={blog}/>;
+      })}
     </div>
   );
 };
