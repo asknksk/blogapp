@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Dashboard from "../pages/Dashboard";
+import LoginPage from "../pages/LoginPage";
 // import Details from "../pages/Details";
 // import Login from "../pages/Login";
 // import Register from "../pages/Register";
@@ -14,6 +15,8 @@ const AppRouter = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Dashboard />} />
+        <Route path="/login" element={<LoginPage pageType={"login"}/>} />
+        <Route path="/register" element={<LoginPage pageType={"register"}/>} />
         
       </Routes>
     </BrowserRouter>

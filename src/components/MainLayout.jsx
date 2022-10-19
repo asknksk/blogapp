@@ -13,22 +13,22 @@ const MainLayout = ({ children, pageType, ...props }) => {
   const menuRef = useRef();
   const hamburgerRef = useRef();
 
-  useEffect(() => {
-    const handle = (e) => {
-      if (
-        hamburgerRef.current.contains(e.target) ||
-        menuRef.current.contains(e.target)
-      ) {
-        setToggleDropdown(true);
-      } else {
-        setToggleDropdown(false);
-      }
-    };
-    document.addEventListener("mousedown", handle);
-    return () => {
-      document.removeEventListener("mousedown", handle);
-    };
-  }, []);
+  // useEffect(() => {
+  //   const handle = (e) => {
+  //     if (
+  //       hamburgerRef.current.contains(e.target) ||
+  //       menuRef.current.contains(e.target)
+  //     ) {
+  //       setToggleDropdown(true);
+  //     } else {
+  //       setToggleDropdown(false);
+  //     }
+  //   };
+  //   document.addEventListener("mousedown", handle);
+  //   return () => {
+  //     document.removeEventListener("mousedown", handle);
+  //   };
+  // }, []);
 
 
   if (loading) {
@@ -77,10 +77,10 @@ const MainLayout = ({ children, pageType, ...props }) => {
         </div>
         <ul className="hidden tablet:flex gap-x-12">
           <li>
-            <Link to="/">Register</Link>
+            <Link to="/register">Register</Link>
           </li>
           <li>
-            <Link to="/">Login</Link>
+            <Link to="/login">Login</Link>
           </li>
         </ul>
       </nav>

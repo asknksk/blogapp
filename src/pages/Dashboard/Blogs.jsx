@@ -28,7 +28,7 @@ const Blogs = () => {
     return <DefaultSpinner />;
   }
   return (
-    <div className="flex gap-2 mt-4 flex-wrap items-center justify-center">
+    <div className="grid tablet:grid-cols-2 phone:grid-cols-1 desktop:grid-cols-3  gap-4 mt-4 ">
       {blogData?.map((blog,idx) => {
         return <BlogCard key={idx} blog={blog}/>;
       })}
