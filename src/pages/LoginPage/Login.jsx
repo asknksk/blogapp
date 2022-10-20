@@ -1,15 +1,25 @@
 import React, { useRef } from "react";
-import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { loginUser } from "../../functions/auth";
 import Input from "./Input";
 import Submit from "./Submit";
 
 const Login = () => {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
   const UserName = useRef();
   const UserEmail = useRef();
   const UserPassword = useRef();
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(UserEmail.current.value, UserPassword.current.value);
+    const data = JSON.stringify({
+      username: UserName.current.value,
+      email: UserEmail.current.value,
+      password: UserPassword.current.value,
+    });
+
+    dispatch(loginUser({ data, navigate }));
   };
   return (
     <div className=" flex flex-col justify-center overflow-hidden w-96 mt-10 ">

@@ -1,10 +1,13 @@
 import React, { useRef } from "react";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import { registerUser } from "../../functions/auth";
 import { validatePasswordsandRegister } from "../../utils/passwordValditator";
 import Input from "./Input";
 import Submit from "./Submit";
 
 const Register = () => {
+  const dispatch = useDispatch()
   const Username = useRef();
   const UserEmail = useRef();
   const UserPassword = useRef();
@@ -12,10 +15,26 @@ const Register = () => {
   const FirstName = useRef();
   const LastName = useRef();
   const handleSubmit = (e) => {
+    // console.log( typeof Username.current.value,
+    //   typeof UserPassword.current.value,
+    //   typeof UserPassword2.current.value,
+    //   typeof UserEmail.current.value,
+    //   typeof FirstName.current.value,
+    //   typeof LastName.current.value,)
     e.preventDefault();
-    console.log(UserEmail.current.value, UserPassword.current.value);
-    validatePasswordsandRegister(UserPassword, UserPassword2)
+    validatePasswordsandRegister(UserPassword.current.value, UserPassword2.current.value);
+    const data = JSON.stringify({
+      "username": Username.current.value,
+      "password": UserPassword.current.value,
+      "password2": UserPassword2.current.value,
+      "email": UserEmail.current.value,
+      "first_name": FirstName.current.value,
+      "last_name": LastName.current.value,
+    });
+
+    dispatch(registerUser({data}));
   };
+  // registerUser
   return (
     <div className=" flex flex-col justify-center overflow-hidden w-96 mt-10 ">
       <div className="w-full p-6 m-auto bg-white rounded-md shadow-md ">

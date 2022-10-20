@@ -4,15 +4,31 @@ import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import MobileHamburger from "./MobileHamburger";
 import DefaultSpinner from "./DefaultSpinner";
+import { logoutUser } from "../functions/auth";
 
 const MainLayout = ({ children, pageType, ...props }) => {
   const [toggleDropdown, setToggleDropdown] = useState(false);
+  const [loginCredential, setLoginCredential] = useState("");
+  const [token, setToken] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { loading } = useSelector((state) => state.auth);
   const menuRef = useRef();
   const hamburgerRef = useRef();
 
+  useEffect(() => {
+    if (JSON.parse(localStorage.getItem("loginCredentials"))) {
+      setLoginCredential(JSON.parse(localStorage.getItem("loginCredentials")));
+      setToken(loginCredential.key);
+    }
+  }, []);
+
+  const handleLogout = (e) => {
+    e.preventDefault();
+    dispatch(logoutUser({ token, navigate }));
+    setLoginCredential("");
+    setToken("");
+  };
   // useEffect(() => {
   //   const handle = (e) => {
   //     if (
@@ -30,7 +46,6 @@ const MainLayout = ({ children, pageType, ...props }) => {
   //   };
   // }, []);
 
-
   if (loading) {
     return <DefaultSpinner />;
   }
@@ -44,8 +59,10 @@ const MainLayout = ({ children, pageType, ...props }) => {
       }}
     >
       <nav className="bg-indigo-400 flex items-center justify-between py-4 px-6 rounded-md shadow-md">
-        <Link to="/" className="">MyBlog</Link>
-        
+        <Link to="/" className="">
+          MyBlog
+        </Link>
+
         <div className="flex items-center gap-x-6 tablet:hidden">
           <div
             className="space-y-1 cursor-pointer"
@@ -77,10 +94,21 @@ const MainLayout = ({ children, pageType, ...props }) => {
         </div>
         <ul className="hidden tablet:flex gap-x-12">
           <li>
-            <Link to="/register">Register</Link>
+            <Link
+              to={loginCredential?.user?.email ? "/create_blog" : "/register"}
+            >
+              {loginCredential?.user?.email ? "CreateBlog" : "Register"}
+            </Link>
           </li>
           <li>
-            <Link to="/login">Login</Link>
+            <Link to={loginCredential?.user?.email ? "/profile" : "/login"}>
+              {loginCredential?.user?.email ? "Profile" : "Login"}
+            </Link>
+          </li>
+          <li className={!loginCredential?.user?.email && "hidden"}>
+            <button onClick={(e) => handleLogout(e)}>
+              {loginCredential?.user?.email && "Logout"}
+            </button>
           </li>
         </ul>
       </nav>
@@ -88,7 +116,6 @@ const MainLayout = ({ children, pageType, ...props }) => {
       <main className="flex-1 flex items-center justify-center">
         {children}
       </main>
-     
     </div>
   );
 };

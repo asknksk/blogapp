@@ -17,14 +17,14 @@ export const validatePasswordsandRegister = (
   loginCredentials,
   dispatch,
 ) => {
-    if (validatePassword(NewPassword1) && validatePassword(NewPassword2)) {
+    if (validatePassword( NewPassword1) && validatePassword(NewPassword2)) {
       if (validateNewPasswords(NewPassword1, NewPassword2)) {
         //TODO register function 
         // dispatch(changePassword({ navigate, data, loginCredentials }))
        
       } else {
         return toastWarnNotify(
-          "The password cannot be matched. Please enter the same two digits."
+          "The password cannot be matched. Please enter the same two digits..."
         );
       }
     } else {
