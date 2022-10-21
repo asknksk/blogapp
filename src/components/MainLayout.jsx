@@ -22,7 +22,6 @@ const MainLayout = ({ children, pageType, ...props }) => {
       setToken(loginCredential.key);
     }
   }, []);
-
   const handleLogout = (e) => {
     e.preventDefault();
     dispatch(logoutUser({ token, navigate }));
@@ -105,7 +104,7 @@ const MainLayout = ({ children, pageType, ...props }) => {
               {loginCredential?.user?.email ? "Profile" : "Login"}
             </Link>
           </li>
-          <li className={!loginCredential?.user?.email && "hidden"}>
+          <li className={!loginCredential?.user?.email ? "hidden" : ""}>
             <button onClick={(e) => handleLogout(e)}>
               {loginCredential?.user?.email && "Logout"}
             </button>

@@ -24,6 +24,7 @@ const blogs = createSlice({
       state.loading = false;
       state.error = action.error.message;
     },
+ 
   },
 });
 

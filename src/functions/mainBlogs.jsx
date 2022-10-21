@@ -1,12 +1,7 @@
-import axios from "axios"
+import { createAsyncThunk } from "@reduxjs/toolkit";
+import api from "../utils/axiosInterceptor";
 
-const baseUrl = process.env.REACT_APP_BASE_URL
-
-export const mainBlogs = async () => {
-  try {
-    const res = await axios.get(`${baseUrl}blog/blog/`);
-    console.log(res);
-  } catch (error) {
-    console.log(error);
-  }
-};
+export const mainBlogs = createAsyncThunk("blog/blog", async () => {
+  let res = await api.get(`blog/blog/`);
+  return res.data;
+});

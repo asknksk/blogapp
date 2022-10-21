@@ -1,27 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import BlogCard from "./components/BlogCard";
-import axios from "axios";
 import DefaultSpinner from "../../components/DefaultSpinner";
-
-const baseUrl = process.env.REACT_APP_BASE_URL;
+import { useDispatch, useSelector } from "react-redux";
+import { mainBlogs } from "../../functions/mainBlogs";
 
 const Blogs = () => {
-  const [loading, setLoading] = useState(false);
-  const [blogData, setblogData] = useState([]);
+  const { loading, error, blogs } = useSelector((state) => state.blogs);
+  const dispatch = useDispatch();
 
-  const blogs = async () => {
-    setLoading(true);
-    try {
-      const res = await axios.get(`${baseUrl}blog/blog/`);
-      setblogData(res.data);
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      console.log(error);
-    }
-  };
   useEffect(() => {
-    blogs();
+    dispatch(mainBlogs());
   }, []);
 
   if (loading) {
@@ -29,8 +17,8 @@ const Blogs = () => {
   }
   return (
     <div className="grid tablet:grid-cols-2 phone:grid-cols-1 desktop:grid-cols-3  gap-4 mt-4 ">
-      {blogData?.map((blog,idx) => {
-        return <BlogCard key={idx} blog={blog}/>;
+      {blogs?.map((blog, idx) => {
+        return <BlogCard key={idx} blog={blog} />;
       })}
     </div>
   );
