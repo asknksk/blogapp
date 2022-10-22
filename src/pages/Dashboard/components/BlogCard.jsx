@@ -14,7 +14,7 @@ const AllBlogs = ({ blog }) => {
       </div>
       <div className="flex flex-col">
         <h4>{blog?.title}</h4>
-        <p>{blog?.publish_date}</p>
+        <p>{blog?.publish_date.slice(0,10)+ " " +blog?.publish_date.slice(11,16) }</p>
         <p>
         {blog?.content.length <= 75
           ? blog?.content.slice(0, 75)

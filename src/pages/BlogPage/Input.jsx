@@ -5,7 +5,7 @@ const Input = ({ innerRef, ...props }) => {
   return (
     <div className='border border-primary rounded-full py-1.5 px-6 bg-white w-full'>
       <input
-        required
+        required={props.required}
         ref={innerRef}
         type={props.type}
         value={value}

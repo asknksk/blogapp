@@ -5,18 +5,20 @@ import MainLayout from "../../components/MainLayout";
 import { useFetchCategories } from "../../utils/usefetchBlogs";
 import Submit from "../LoginPage/Submit";
 import Input from "./Input";
+import { CreatePostBlogs } from "../../functions/mainBlogs";
 
 const NewBlog = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [token, setToken] = useState("");
+  const [username, setUsername] = useState("");
+  const [blogImage, setBlogImage] = useState("");
   const [newObj, setNewObj] = useState([]);
-  const [optionCategory, setOptionCategory] = useState(0);
-  const [optionStatus, setOptionStatus] = useState(0);
+  const [optionCategory, setOptionCategory] = useState(1);
+  const [optionStatus, setOptionStatus] = useState("d");
 
   const Title = useRef();
   const Content = useRef();
-  const Image = useRef();
-  const Status = useRef();
   const categories = useFetchCategories();
 
   const handleChangeCategory = (e) => {
@@ -25,7 +27,17 @@ const NewBlog = () => {
   const handleChangeStatus = (e) => {
     setOptionStatus(e.target.value);
   };
-
+  const handleChangeImage = (e) => {
+    setBlogImage(e.target.value);
+  };
+  useEffect(() => {
+    if (JSON.parse(localStorage.getItem("loginCredentials"))) {
+      setToken(JSON.parse(localStorage.getItem("loginCredentials")).key);
+      setUsername(
+        JSON.parse(localStorage.getItem("loginCredentials")).user.username
+      );
+    }
+  }, []);
   useEffect(() => {
     const objecta = Object.assign({}, categories);
     const newArr = Object.entries(objecta);
@@ -34,14 +46,26 @@ const NewBlog = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const data = {
-      title: Title.current.value,
-      content: Content.current.value,
-      image: Image.current.value,
-      category: optionCategory,
-      status: optionStatus,
-    };
-    console.log(data); 
+    let data;
+    if (blogImage === "") {
+      data = {
+        title: Title.current.value,
+        content: Content.current.value,
+        category: optionCategory,
+        status: optionStatus,
+        user: username,
+      };
+    } else {
+      data = {
+        title: Title.current.value,
+        content: Content.current.value,
+        image: blogImage,
+        category: optionCategory,
+        status: optionStatus,
+        user: username,
+      };
+    }
+    dispatch(CreatePostBlogs({data, token, navigate}));
   };
   return (
     <MainLayout>
@@ -55,10 +79,16 @@ const NewBlog = () => {
             onSubmit={(e) => handleSubmit(e)}
           >
             <div className="col-span-2 ">
-              <Input innerRef={Title} type="text" placeholder="Blog title" />
+              <Input
+                innerRef={Title}
+                type="text"
+                placeholder="Blog title"
+                required={true}
+              />
             </div>
             <div className="col-span-2 ">
               <textarea
+                required={true}
                 ref={Content}
                 className="border border-primary text-[11px] font-medium rounded-xl py-1.5 px-6 bg-white w-full resize-none  focus:outline-none focus:border-primary focus:ring-1 "
                 rows="4"
@@ -66,10 +96,11 @@ const NewBlog = () => {
               ></textarea>
             </div>
             <div className="col-span-2 ">
-              <Input
-                innerRef={Image}
-                type="text"
+              <input
+                className="border-b w-full outline-none text-[11px] font-medium"
+                type="url"
                 placeholder="Blog Image Url"
+                onChange={(e) => handleChangeImage(e)}
               />
             </div>
             <div className="col-span-2 ">
@@ -79,7 +110,7 @@ const NewBlog = () => {
               >
                 {newObj?.map((i, idx) => {
                   return (
-                    <option value={i[0]} key={idx}>
+                    <option value={parseInt(i[0]) + 1} key={idx}>
                       {i[1]?.name}
                     </option>
                   );
