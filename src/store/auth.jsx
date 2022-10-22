@@ -21,7 +21,6 @@ const auth = createSlice({
       state.loading = true;
     },
     [loginUser.fulfilled]: (state, action) => {
-      console.log(action.payload);
       state.loading = false;
       state.loginCredentials = action.payload;
     },

@@ -5,11 +5,9 @@ import { toastErrorNotify, toastSuccessNotify } from "../utils/customToastify";
 export const registerUser = createAsyncThunk(
   "auth/register",
   async ({ data }) => {
-    console.log(data);
     await api
       .post("users/register/", data)
       .then(function (response) {
-        console.log(response);
         toastSuccessNotify("Success! ");
       })
       .catch(function (error) {

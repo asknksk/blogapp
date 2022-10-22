@@ -15,12 +15,6 @@ const Register = () => {
   const FirstName = useRef();
   const LastName = useRef();
   const handleSubmit = (e) => {
-    // console.log( typeof Username.current.value,
-    //   typeof UserPassword.current.value,
-    //   typeof UserPassword2.current.value,
-    //   typeof UserEmail.current.value,
-    //   typeof FirstName.current.value,
-    //   typeof LastName.current.value,)
     e.preventDefault();
     validatePasswordsandRegister(UserPassword.current.value, UserPassword2.current.value);
     const data = JSON.stringify({

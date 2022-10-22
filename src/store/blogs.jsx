@@ -16,7 +16,6 @@ const blogs = createSlice({
       state.loading = true;
     },
     [mainBlogs.fulfilled]: (state, action) => {
-      console.log(action.payload);
       state.loading = false;
       state.blogs = action.payload;
     },

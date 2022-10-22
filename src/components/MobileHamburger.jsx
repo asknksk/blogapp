@@ -10,12 +10,9 @@ const MobileHamburger = ({ toggleDropdown, innerRef, setToggleDropdown }) => {
     e.preventDefault();
     // TODO: logout api yazildiktan sonra asagidaki yorum satiri kaldirilacak
     //dispatch(logoutUser({ token, navigate }));
-    console.log("deneme");
+  
   };
 
-  // useEffect(() => {
-  //   console.log(kvkk);
-  // }, [kvkk]);
 
   return (
     <>
