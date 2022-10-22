@@ -51,10 +51,10 @@ const MainLayout = ({ children, pageType, ...props }) => {
 
   return (
     <div
-      className=" m-0 px-2.5 py-3.5 bg-indigo-100"
+      className=" m-0 px-2.5 py-3.5 bg-indigo-100 min-h-screen"
       style={{
         width: "100%",
-        height: "100vh",
+        height: "100%",
       }}
     >
       <nav className="bg-indigo-400 flex items-center justify-between py-4 px-6 rounded-md shadow-md">
