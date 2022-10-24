@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import BlogDetails from "../pages/BlogDetails/index.jsx";
-import NewBlog from "../pages/BlogPage/index.jsx";
+import NewBlog from "../pages/BlogCreatePage/index.jsx";
 import Dashboard from "../pages/Dashboard";
 import LoginPage from "../pages/LoginPage";
 // import Details from "../pages/Details";

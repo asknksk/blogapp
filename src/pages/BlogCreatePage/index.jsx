@@ -11,7 +11,6 @@ const NewBlog = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [token, setToken] = useState("");
-  const [username, setUsername] = useState("");
   const [blogImage, setBlogImage] = useState("");
   const [newObj, setNewObj] = useState([]);
   const [optionCategory, setOptionCategory] = useState(1);
@@ -33,9 +32,7 @@ const NewBlog = () => {
   useEffect(() => {
     if (JSON.parse(localStorage.getItem("loginCredentials"))) {
       setToken(JSON.parse(localStorage.getItem("loginCredentials")).key);
-      setUsername(
-        JSON.parse(localStorage.getItem("loginCredentials")).user.username
-      );
+      
     }
   }, []);
   useEffect(() => {
@@ -51,18 +48,16 @@ const NewBlog = () => {
       data = {
         title: Title.current.value,
         content: Content.current.value,
-        category: optionCategory,
+        category: Number(optionCategory),
         status: optionStatus,
-        user: username,
       };
     } else {
       data = {
         title: Title.current.value,
         content: Content.current.value,
         image: blogImage,
-        category: optionCategory,
+        category: Number(optionCategory),
         status: optionStatus,
-        user: username,
       };
     }
     dispatch(CreatePostBlogs({data, token, navigate}));

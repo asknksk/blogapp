@@ -13,7 +13,7 @@ export const CreatePostBlogs = createAsyncThunk(
     await api
       .post("/blog/blog/", data, {
         headers: {
-          Authorization: "Bearer " + token,
+          Authorization: "Token " + token,
         },
       })
       .then(function (response) {

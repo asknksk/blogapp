@@ -23,7 +23,7 @@ export const loginUser = createAsyncThunk(
 
     if (res.status === 200 && !!res.data) {
       localStorage.setItem("loginCredentials", JSON.stringify(res.data));
-      //backenddeki messages duzeltildikten sonra burada da duzeltilecek
+
       toastSuccessNotify("Login successfully...");
 
       navigate("/", { replace: true });
@@ -42,7 +42,7 @@ export const logoutUser = createAsyncThunk(
       {},
       {
         headers: {
-          Authorization: "Bearer " + token,
+          Authorization: "Token " + token,
         },
       }
     );
