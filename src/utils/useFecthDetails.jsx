@@ -4,11 +4,11 @@ import { toastErrorNotify } from "./customToastify";
 
 //TODO kullanılmıyor şimdilik örnek olarak kalsın
 
-// export const useFetchPatchBlog = ({ blog_id }) => {
+// export const useFetchGetComments = ({ blog_id }) => {
 //   const [data, setData] = useState([]);
 //   useEffect(() => {
 //     api
-//       .get(`/blog/blog/${blog_id}`)
+//       .get(`/blog/comments/${blog_id}`)
 //       .then((res) => {
 //         setData(res.data);
 //       })
@@ -19,3 +19,5 @@ import { toastErrorNotify } from "./customToastify";
 
 //   return data;
 // };
+
+

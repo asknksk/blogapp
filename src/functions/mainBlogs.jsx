@@ -6,6 +6,20 @@ export const mainBlogs = createAsyncThunk("blog/blog", async () => {
   let res = await api.get(`blog/blog/`);
   return res.data;
 });
+export const singleBlogDetail = createAsyncThunk(
+  "blog/blog/id",
+  async ({ id, token }) => {
+    let res = await api.get(`blog/blog/${id}/`, {
+      headers: {
+        Authorization: "Token " + token,
+      },
+    });
+    if(res.status === 200){
+
+      return res.data;
+    }
+  }
+);
 
 export const CreatePostBlogs = createAsyncThunk(
   "blog/blog/",
@@ -40,7 +54,27 @@ export const PatchBlog = createAsyncThunk(
       .then(function (response) {
         if (!!response.data.id) {
           toastSuccessNotify("Changes completed successfully");
-          navigate("/")
+          navigate("/");
+        } else toastWarnNotify("Opps someting wrong please try again");
+      })
+      .catch(function (error) {
+        toastWarnNotify(error);
+      });
+  }
+);
+
+export const AddComment = createAsyncThunk(
+  "blog/comments/",
+  async ({ data, token, id }) => {
+    await api
+      .post(`/blog/comments/${id}/`, data, {
+        headers: {
+          Authorization: "Token " + token,
+        },
+      })
+      .then(function (response) {
+        if (!!response.data.id) {
+          toastSuccessNotify("Your comment has been successfully added.");
         } else toastWarnNotify("Opps someting wrong please try again");
       })
       .catch(function (error) {

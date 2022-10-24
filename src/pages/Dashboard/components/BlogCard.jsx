@@ -6,11 +6,7 @@ const BlogCard = ({ blog }) => {
   const navigate = useNavigate();
   const handleOpenDetail = () => {
     const blogDetail = blog;
-    navigate(`/detail/${blogDetail?.id}`, {
-      state: {
-        blogDetail,
-      },
-    });
+    navigate(`/detail/${blogDetail?.id}`);
   };
   if (blog.status === "p") {
     return (

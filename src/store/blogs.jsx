@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { mainBlogs, CreatePostBlogs } from "../functions/mainBlogs";
+import { mainBlogs, CreatePostBlogs, PatchBlog, AddComment } from "../functions/mainBlogs";
 
 const initialState = {
   loading: false,
@@ -30,6 +30,26 @@ const blogs = createSlice({
       state.loading = false;
     },
     [CreatePostBlogs.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.error.message;
+    },
+    [PatchBlog.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [PatchBlog.fulfilled]: (state, action) => {
+      state.loading = false;
+    },
+    [PatchBlog.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.error.message;
+    },
+    [AddComment.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [AddComment.fulfilled]: (state, action) => {
+      state.loading = false;
+    },
+    [AddComment.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.error.message;
     },
