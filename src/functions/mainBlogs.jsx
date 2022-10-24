@@ -8,7 +8,7 @@ export const mainBlogs = createAsyncThunk("blog/blog", async () => {
 });
 
 export const CreatePostBlogs = createAsyncThunk(
-  "auth/changePassword",
+  "blog/blog/",
   async ({ data, token, navigate }) => {
     await api
       .post("/blog/blog/", data, {
@@ -28,6 +28,23 @@ export const CreatePostBlogs = createAsyncThunk(
   }
 );
 
-
-
-
+export const PatchBlog = createAsyncThunk(
+  "blog/blog/",
+  async ({ data, token, blog_id, navigate }) => {
+    await api
+      .patch(`/blog/blog/${blog_id}/`, data, {
+        headers: {
+          Authorization: "Token " + token,
+        },
+      })
+      .then(function (response) {
+        if (!!response.data.id) {
+          toastSuccessNotify("Changes completed successfully");
+          navigate("/")
+        } else toastWarnNotify("Opps someting wrong please try again");
+      })
+      .catch(function (error) {
+        toastWarnNotify(error);
+      });
+  }
+);

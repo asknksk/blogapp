@@ -1,9 +1,9 @@
 import MainLayout from "../../components/MainLayout";
 import Blogs from "./Blogs";
 
-const Dashboard = ({ pageType }) => {
+const Dashboard = () => {
   return (
-    <MainLayout pageType={pageType}>
+    <MainLayout>
       <Blogs />
     </MainLayout>
   );

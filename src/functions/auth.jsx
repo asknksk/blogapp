@@ -18,7 +18,7 @@ export const registerUser = createAsyncThunk(
 
 export const loginUser = createAsyncThunk(
   "auth/login",
-  async ({ data, navigate },  /**thunkApi object */) => {
+  async ({ data, navigate } /**thunkApi object */) => {
     let res = await api.post("/users/auth/login/", data);
 
     if (res.status === 200 && !!res.data) {
@@ -29,7 +29,6 @@ export const loginUser = createAsyncThunk(
       navigate("/", { replace: true });
     } else {
       toastErrorNotify("Oppss... Check your information.");
-      
     }
   }
 );
@@ -39,7 +38,6 @@ export const logoutUser = createAsyncThunk(
   async ({ token, navigate }) => {
     let res = await api.post(
       "/users/auth/logout/",
-      {},
       {
         headers: {
           Authorization: "Token " + token,

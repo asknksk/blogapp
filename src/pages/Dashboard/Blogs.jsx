@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
-import BlogCard from "./components/BlogCard";
 import DefaultSpinner from "../../components/DefaultSpinner";
 import { useDispatch, useSelector } from "react-redux";
 import { mainBlogs } from "../../functions/mainBlogs";
+import BlogCard from "./components/BlogCard";
 
 const Blogs = () => {
   const { loading, error, blogs } = useSelector((state) => state.blogs);

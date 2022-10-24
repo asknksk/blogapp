@@ -3,6 +3,7 @@ import BlogDetails from "../pages/BlogDetails/index.jsx";
 import NewBlog from "../pages/BlogCreatePage/index.jsx";
 import Dashboard from "../pages/Dashboard";
 import LoginPage from "../pages/LoginPage";
+import MyBlogs from "../pages/MyBlogs/index.jsx";
 // import Details from "../pages/Details";
 // import Profile from "../pages/Profile";
 // import NewBlog from "../pages/NewBlog";
@@ -19,6 +20,8 @@ const AppRouter = () => {
         <Route path="/register" element={<LoginPage pageType={"register"} />} />
         <Route path="/create_blog" element={<NewBlog />} />
         <Route path="/detail/:id" element={<BlogDetails />} />
+        <Route path="/my-blogs/" element={<MyBlogs />} />
+        <Route path="*" element={<div>Not Found</div>} />
       </Routes>
     </BrowserRouter>
   );

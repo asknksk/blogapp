@@ -6,7 +6,7 @@ import MobileHamburger from "./MobileHamburger";
 import DefaultSpinner from "./DefaultSpinner";
 import { logoutUser } from "../functions/auth";
 
-const MainLayout = ({ children, pageType, ...props }) => {
+const MainLayout = ({ children, ...props }) => {
   const [toggleDropdown, setToggleDropdown] = useState(false);
   const [loginCredential, setLoginCredential] = useState("");
   const [token, setToken] = useState("");
@@ -59,7 +59,7 @@ const MainLayout = ({ children, pageType, ...props }) => {
     >
       <nav className="bg-indigo-400 flex items-center justify-between py-4 px-6 rounded-md shadow-md">
         <Link to="/" className="">
-          MyBlog
+          BlogPage
         </Link>
 
         <div className="flex items-center gap-x-6 tablet:hidden">
@@ -97,6 +97,13 @@ const MainLayout = ({ children, pageType, ...props }) => {
               to={loginCredential?.user?.email ? "/create_blog" : "/register"}
             >
               {loginCredential?.user?.email ? "CreateBlog" : "Register"}
+            </Link>
+          </li>
+          <li className={loginCredential?.user?.email ? "" : "hidden"}>
+            <Link
+              to={loginCredential?.user?.email && "/my-blogs" }
+            >
+              {loginCredential?.user?.email && "MyBlogs" }
             </Link>
           </li>
           <li>

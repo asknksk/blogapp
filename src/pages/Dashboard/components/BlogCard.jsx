@@ -1,9 +1,8 @@
-import React from "react";
 import { MdFavorite, MdVisibility } from "react-icons/md";
 import { BsChatLeft } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 
-const AllBlogs = ({ blog }) => {
+const BlogCard = ({ blog }) => {
   const navigate = useNavigate();
   const handleOpenDetail = () => {
     const blogDetail = blog;
@@ -13,7 +12,6 @@ const AllBlogs = ({ blog }) => {
       },
     });
   };
-  console.log(blog.status);
   if (blog.status === "p") {
     return (
       <div
@@ -74,5 +72,4 @@ const AllBlogs = ({ blog }) => {
     );
   }
 };
-
-export default AllBlogs;
+export default BlogCard;
