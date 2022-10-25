@@ -9,6 +9,7 @@ import DefaultSpinner from "../../components/DefaultSpinner";
 
 const BlogDetails = () => {
   const { id } = useParams();
+  console.log(id)
   const [newComment, setNewComment] = useState("");
   const [token, setToken] = useState("");
   const dispatch = useDispatch();
