@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { singleBlogDetail } from "../functions/mainBlogs";
+import {  singleBlogDetail } from "../functions/mainBlogs";
 
 const initialState = {
   loading: false,

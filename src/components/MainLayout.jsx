@@ -58,8 +58,8 @@ const MainLayout = ({ children, ...props }) => {
       }}
     >
       <nav className="bg-indigo-400 flex items-center justify-between py-4 px-6 rounded-md shadow-md">
-        <Link to="/" className="">
-          BlogPage
+        <Link to="/" >
+          AsknBlogPage
         </Link>
 
         <div className="flex items-center gap-x-6 tablet:hidden">

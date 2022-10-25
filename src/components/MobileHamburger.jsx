@@ -48,9 +48,6 @@ const MobileHamburger = ({ toggleDropdown, innerRef, setToggleDropdown }) => {
             >
               <div className="flex justify-center items-center mx-4">
                 {item.title}
-                {!!item.icon && (
-                  <img src={item.icon} alt="" className="w-[2rem] mx-4" />
-                )}
               </div>
             </div>
           </li>

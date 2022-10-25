@@ -14,8 +14,7 @@ export const singleBlogDetail = createAsyncThunk(
         Authorization: "Token " + "ba807d4f901ba04f080d72bb78c36cf22de4d7c4",
       },
     });
-    if(res.status === 200){
-
+    if (res.status === 200) {
       return res.data;
     }
   }
@@ -81,4 +80,37 @@ export const AddComment = createAsyncThunk(
         toastWarnNotify(error);
       });
   }
+);
+export const LikeFunction = createAsyncThunk(
+  "/blog/likes/post",
+  async ({ token, blog_id }) => {
+    await api
+      .post(`/blog/likes/${blog_id}/`, {}, {
+        headers: {
+          Authorization: `Token ${token}`,
+        },
+      })
+      .then(function (response) {
+        if (!!response.data) {
+        } else toastWarnNotify("Opps someting wrong please try again");
+        return response.data;
+      })
+      
+  }
+);
+export const GetLikeFunction = createAsyncThunk(
+  "/blog/likes/id/",
+  async ({ blog_id }) => {
+    await api
+      .get(`/blog/likes/${blog_id}/`,{},{})
+      .then(function (response) {
+        if (response.status === 200) {
+        } else toastWarnNotify("Opps someting wrong please try again");
+        return response.data;
+      })
+      .catch(function (error) {
+        toastWarnNotify(error);
+      });
+  }
+
 );

@@ -1,20 +1,76 @@
 import { MdFavorite, MdVisibility } from "react-icons/md";
 import { BsChatLeft } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { GetLikeFunction, LikeFunction } from "../../../functions/mainBlogs";
+import { useEffect, useState } from "react";
+import api from "../../../utils/axiosInterceptor";
+import DefaultSpinner from "../../../components/DefaultSpinner";
 
 const BlogCard = ({ blog }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [token, setToken] = useState("");
+  const [userId, setUserId] = useState("");
+  const [likesRes, setLikesRes] = useState("");
+  const { loading, likes } = useSelector((state) => state.likes);
+  // console.log(userId)
+  useEffect(() => {
+    console.log(likes);
+  }, [likes]);
+
+  useEffect(() => {
+    if (JSON.parse(localStorage.getItem("loginCredentials"))) {
+      setToken(JSON.parse(localStorage.getItem("loginCredentials")).key);
+      setUserId(JSON.parse(localStorage.getItem("loginCredentials")).user.id);
+    }
+  }, []);
+
+  const LikesBlog = async (blog_id, token) => {
+    api
+      .post(
+        `blog/likes/${blog_id}/`,
+        {},
+        {
+          headers: {
+            Authorization: "Token " + token,
+          },
+        }
+      )
+      .then((res) => {
+        setLikesRes(res.data);
+      });
+    };
+    const blog_id = blog?.id;
+    const handleLike = async(e) => {
+    // await LikesBlog(blog_id, token).then(()=> console.log(likesRes))
+    dispatch(LikeFunction({ token, blog_id })).then(()=>dispatch(GetLikeFunction({blog_id})))
+    // dispatch(AddComment({ data, token, id })).then(() =>
+    //     dispatch(singleBlogDetail({ id, token }))
+    //   );
+    // .then(()=> {
+    //   if()
+    // });
+    // console.log(likes)
+    // const id = e.target
+    // dispatch(LikeFunction({token, id}))
+  };
   const handleOpenDetail = () => {
     const blogDetail = blog;
     navigate(`/detail/${blogDetail?.id}`);
   };
+
+  if (loading) {
+    return <DefaultSpinner />;
+  }
+
   if (blog.status === "p") {
     return (
-      <div
-        className="flex flex-col border border-green-400 max-h-80 max-w-xs"
-        onClick={() => handleOpenDetail()}
-      >
-        <div className="max-h-44 max-w-xs ">
+      <div className="flex flex-col border border-green-400 max-h-80 max-w-xs">
+        <div
+          className="max-h-44 max-w-xs cursor-pointer"
+          onClick={() => handleOpenDetail()}
+        >
           <img
             src={blog?.image}
             alt="blog"
@@ -45,11 +101,15 @@ const BlogCard = ({ blog }) => {
           <p>{blog?.author}</p>
         </div>
         <div className="flex gap-x-3">
-          <div className="flex items-center gap-x-1">
-            <span>
-              <MdFavorite className="text-red-800" />
+          <div className="flex items-center gap-x-1 likeBtnDiv">
+            <span
+              onClick={(e) => handleLike(e)}
+              className="cursor-pointer likeBtnDiv"
+              data-id={blog?.id}
+            >
+              <MdFavorite className="text-red-800 likeBtnDiv" />
             </span>
-            <p>{blog?.likes}</p>
+            <p className="likeBtnDiv">{blog?.likes}</p>
           </div>
           <div className="flex items-center gap-x-1">
             <span>
