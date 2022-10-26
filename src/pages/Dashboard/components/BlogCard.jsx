@@ -1,15 +1,9 @@
 import { MdFavorite, MdVisibility } from "react-icons/md";
 import { BsChatLeft } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  GetLikeFunction,
-  LikeFunction,
-  mainBlogs,
-} from "../../../functions/mainBlogs";
+import { useDispatch } from "react-redux";
+import { LikeFunction } from "../../../functions/mainBlogs";
 import { useEffect, useState } from "react";
-import api from "../../../utils/axiosInterceptor";
-import DefaultSpinner from "../../../components/DefaultSpinner";
 import { toastWarnNotify } from "../../../utils/customToastify";
 
 const BlogCard = ({ blog, fetchState, setFetchState }) => {
@@ -17,14 +11,11 @@ const BlogCard = ({ blog, fetchState, setFetchState }) => {
   const dispatch = useDispatch();
   const [token, setToken] = useState("");
   const [userId, setUserId] = useState("");
-  const [likesRes, setLikesRes] = useState("");
-
-  // const { loading, likes } = useSelector((state) => state.likes);
-
-  const { loading, blogs } = useSelector((state) => state.blogs);
 
   const blog_id = blog?.id;
-
+  const blogUserIdContains =
+    blog?.likes.filter((like) => like.user_id === userId).length > 0;
+  console.log(blogUserIdContains);
   useEffect(() => {
     if (JSON.parse(localStorage.getItem("loginCredentials"))) {
       setToken(JSON.parse(localStorage.getItem("loginCredentials")).key);
@@ -32,27 +23,7 @@ const BlogCard = ({ blog, fetchState, setFetchState }) => {
     }
   }, []);
 
-  const LikesBlog = async (blog_id, token) => {
-    api
-      .post(
-        `blog/likes/${blog_id}/`,
-        {},
-        {
-          headers: {
-            Authorization: "Token " + token,
-          },
-        }
-      )
-      .then((res) => {
-        setLikesRes(res.data);
-      });
-  };
-
   const handleLike = async (e) => {
-    const newBlog = blogs.filter((singleBlog) => singleBlog?.id === blog_id);
-    console.log(newBlog);
-    console.log(fetchState);
-    // await LikesBlog(blog_id, token).then(()=> console.log(likesRes))
     if (!!token) {
       dispatch(LikeFunction({ token, blog_id })).then(() =>
         setFetchState(!fetchState)
@@ -60,24 +31,11 @@ const BlogCard = ({ blog, fetchState, setFetchState }) => {
     } else {
       toastWarnNotify("Please login");
     }
-    // dispatch(AddComment({ data, token, id })).then(() =>
-    //     dispatch(singleBlogDetail({ id, token }))
-    //   );
-    // .then(()=> {
-    //   if()
-    // });
-    // console.log(likes)
-    // const id = e.target
-    // dispatch(LikeFunction({token, id}))
   };
   const handleOpenDetail = () => {
     const blogDetail = blog;
     navigate(`/detail/${blogDetail?.id}`);
   };
-
-  if (loading) {
-    return <DefaultSpinner />;
-  }
 
   if (blog.status === "p") {
     return (
@@ -122,7 +80,13 @@ const BlogCard = ({ blog, fetchState, setFetchState }) => {
               className="cursor-pointer likeBtnDiv"
               data-id={blog?.id}
             >
-              <MdFavorite className="text-red-800 likeBtnDiv" />
+              <MdFavorite
+                className={
+                  blogUserIdContains
+                    ? "text-red-800 likeBtnDiv"
+                    : "text-white likeBtnDiv"
+                }
+              />
             </span>
             <p className="likeBtnDiv">{blog?.likes?.length}</p>
           </div>
