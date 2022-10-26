@@ -21,6 +21,9 @@ const MyBlogCard = ({ blog }) => {
   useEffect(() => {
     if (JSON.parse(localStorage.getItem("loginCredentials"))) {
       setToken(JSON.parse(localStorage.getItem("loginCredentials")).key);
+      setUserName(
+        JSON.parse(localStorage.getItem("loginCredentials")).user.username
+      );
     }
   }, []);
 
@@ -34,11 +37,6 @@ const MyBlogCard = ({ blog }) => {
     dispatch(PatchBlog({ data, token, blog_id, navigate }));
   };
 
-  useEffect(() => {
-    setUserName(
-      JSON.parse(localStorage.getItem("loginCredentials")).user.username
-    );
-  }, []);
 
   if (blog.author === userName) {
     return (
@@ -79,7 +77,7 @@ const MyBlogCard = ({ blog }) => {
               <span>
                 <MdFavorite className="text-red-800" />
               </span>
-              <p>{blog?.likes}</p>
+              <p>{blog?.likes?.length}</p>
             </div>
             <div className="flex items-center gap-x-1">
               <span>

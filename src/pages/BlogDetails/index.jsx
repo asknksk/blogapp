@@ -6,10 +6,10 @@ import { useParams } from "react-router-dom";
 import { AddComment, singleBlogDetail } from "../../functions/mainBlogs";
 import { useDispatch, useSelector } from "react-redux";
 import DefaultSpinner from "../../components/DefaultSpinner";
+import { toastWarnNotify } from "../../utils/customToastify";
 
 const BlogDetails = () => {
   const { id } = useParams();
-  console.log(id)
   const [newComment, setNewComment] = useState("");
   const [token, setToken] = useState("");
   const dispatch = useDispatch();
@@ -36,16 +36,20 @@ const BlogDetails = () => {
     };
 
     if (!!newComment) {
-      dispatch(AddComment({ data, token, id })).then(() =>
-        dispatch(singleBlogDetail({ id, token }))
-      );
+      if (!!token) {
+        dispatch(AddComment({ data, token, id })).then(() =>
+          dispatch(singleBlogDetail({ id, token }))
+        );
+      } else {
+        toastWarnNotify("Please login");
+      }
     }
     setNewComment("");
   };
 
-  if (loading) {
-    return <DefaultSpinner />;
-  }
+  // if (loading) {
+  //   return <DefaultSpinner />;
+  // }
 
   return (
     <MainLayout>
@@ -85,7 +89,7 @@ const BlogDetails = () => {
             <span>
               <MdFavorite className="text-red-800" />
             </span>
-            <p>{singleBlogData?.likes}</p>
+            <p>{singleBlogData?.likes?.length}</p>
           </div>
           <div className="flex items-center gap-x-1">
             <span>

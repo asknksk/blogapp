@@ -2,22 +2,28 @@ import { MdFavorite, MdVisibility } from "react-icons/md";
 import { BsChatLeft } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { GetLikeFunction, LikeFunction } from "../../../functions/mainBlogs";
+import {
+  GetLikeFunction,
+  LikeFunction,
+  mainBlogs,
+} from "../../../functions/mainBlogs";
 import { useEffect, useState } from "react";
 import api from "../../../utils/axiosInterceptor";
 import DefaultSpinner from "../../../components/DefaultSpinner";
+import { toastWarnNotify } from "../../../utils/customToastify";
 
-const BlogCard = ({ blog }) => {
+const BlogCard = ({ blog, fetchState, setFetchState }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [token, setToken] = useState("");
   const [userId, setUserId] = useState("");
   const [likesRes, setLikesRes] = useState("");
-  const { loading, likes } = useSelector((state) => state.likes);
-  // console.log(userId)
-  useEffect(() => {
-    console.log(likes);
-  }, [likes]);
+
+  // const { loading, likes } = useSelector((state) => state.likes);
+
+  const { loading, blogs } = useSelector((state) => state.blogs);
+
+  const blog_id = blog?.id;
 
   useEffect(() => {
     if (JSON.parse(localStorage.getItem("loginCredentials"))) {
@@ -40,11 +46,20 @@ const BlogCard = ({ blog }) => {
       .then((res) => {
         setLikesRes(res.data);
       });
-    };
-    const blog_id = blog?.id;
-    const handleLike = async(e) => {
+  };
+
+  const handleLike = async (e) => {
+    const newBlog = blogs.filter((singleBlog) => singleBlog?.id === blog_id);
+    console.log(newBlog);
+    console.log(fetchState);
     // await LikesBlog(blog_id, token).then(()=> console.log(likesRes))
-    dispatch(LikeFunction({ token, blog_id })).then(()=>dispatch(GetLikeFunction({blog_id})))
+    if (!!token) {
+      dispatch(LikeFunction({ token, blog_id })).then(() =>
+        setFetchState(!fetchState)
+      );
+    } else {
+      toastWarnNotify("Please login");
+    }
     // dispatch(AddComment({ data, token, id })).then(() =>
     //     dispatch(singleBlogDetail({ id, token }))
     //   );
@@ -109,7 +124,7 @@ const BlogCard = ({ blog }) => {
             >
               <MdFavorite className="text-red-800 likeBtnDiv" />
             </span>
-            <p className="likeBtnDiv">{blog?.likes}</p>
+            <p className="likeBtnDiv">{blog?.likes?.length}</p>
           </div>
           <div className="flex items-center gap-x-1">
             <span>
