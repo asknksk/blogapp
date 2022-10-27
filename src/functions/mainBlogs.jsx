@@ -9,7 +9,7 @@ export const mainBlogs = createAsyncThunk("blog/blog", async () => {
 export const singleBlogDetail = createAsyncThunk(
   "blog/blog/id",
   async ({ id, token }) => {
-    let res = await api.get(`blog/blog/${id}/`, {}, {
+    let res = await api.get(`blog/blog/${id}/`, {
       headers: {
         Authorization: "Token " + token,
       },
