@@ -105,7 +105,7 @@ const NewBlog = () => {
               >
                 {newObj?.map((i, idx) => {
                   return (
-                    <option value={parseInt(i[0]) + 1} key={idx}>
+                    <option value={(i[1]?.id)} key={idx}>
                       {i[1]?.name}
                     </option>
                   );

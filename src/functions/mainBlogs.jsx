@@ -23,6 +23,7 @@ export const singleBlogDetail = createAsyncThunk(
 export const CreatePostBlogs = createAsyncThunk(
   "blog/blog/",
   async ({ data, token, navigate }) => {
+    console.log(data)
     await api
       .post("/blog/blog/", data, {
         headers: {
