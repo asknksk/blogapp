@@ -81,6 +81,25 @@ export const AddComment = createAsyncThunk(
       });
   }
 );
+export const DeleteBlog = createAsyncThunk(
+  "blog/delete/",
+  async ({token, id }) => {
+    await api
+      .delete(`/blog/blog/${id}/`, {}, {
+        headers: {
+          Authorization: "Token " + token,
+        },
+      })
+      .then(function (response) {
+        if (response.status === 204) {
+          toastSuccessNotify("Your blog successfully deleted ");
+        } else toastWarnNotify("Opps someting wrong please try again");
+      })
+      .catch(function (error) {
+        toastWarnNotify(error);
+      });
+  }
+);
 export const LikeFunction = createAsyncThunk(
   "/blog/likes/post",
   async ({ token, blog_id }) => {
@@ -97,20 +116,4 @@ export const LikeFunction = createAsyncThunk(
       })
       
   }
-);
-export const GetLikeFunction = createAsyncThunk(
-  "/blog/likes/id/",
-  async ({ blog_id }) => {
-    await api
-      .get(`/blog/likes/${blog_id}/`,{},{})
-      .then(function (response) {
-        if (response.status === 200) {
-        } else toastWarnNotify("Opps someting wrong please try again");
-        return response.data;
-      })
-      .catch(function (error) {
-        toastWarnNotify(error);
-      });
-  }
-
 );

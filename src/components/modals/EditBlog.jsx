@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { CreatePostBlogs, PatchBlog } from "../../functions/mainBlogs";
+import { PatchBlog } from "../../functions/mainBlogs";
 import Input from "../../pages/BlogCreatePage/Input";
 import Submit from "../../pages/LoginPage/Submit";
 import { modalClose } from "../../utils/modalClose";
@@ -15,7 +15,6 @@ export default function EditBlog({ data }) {
   const [newObj, setNewObj] = useState([]);
   const [optionCategory, setOptionCategory] = useState(1);
   const [optionStatus, setOptionStatus] = useState("d");
-  const [value, setValue] = useState("");
 
   const Title = useRef();
   const Content = useRef();

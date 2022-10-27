@@ -11,7 +11,7 @@ const BlogCard = ({ blog, fetchState, setFetchState }) => {
   const dispatch = useDispatch();
   const [token, setToken] = useState("");
   const [userId, setUserId] = useState("");
-
+  const [isValid, setIsValid] = useState(false);
   const blog_id = blog?.id;
   const blogUserIdContains =
     blog?.likes.filter((like) => like.user_id === userId).length > 0;
@@ -36,33 +36,51 @@ const BlogCard = ({ blog, fetchState, setFetchState }) => {
     navigate(`/detail/${blogDetail?.id}`);
   };
 
+  function checkImage(url) {
+    var image = new Image();
+    image.onload = function () {
+      if (this.width > 0) {
+        setIsValid(true);
+      }
+    };
+    image.onerror = function () {
+      setIsValid(false);
+    };
+    image.src = url;
+  }
+
+  checkImage(blog?.image);
   if (blog.status === "p") {
     return (
-      <div className="flex flex-col border border-green-400 max-h-80 max-w-xs">
+      <div className="flex flex-col border border-green-400 max-h-[340px] max-w-xs">
         <div
           className="max-h-44 max-w-xs cursor-pointer"
           onClick={() => handleOpenDetail()}
         >
           <img
-            src={blog?.image}
+            src={isValid ? blog?.image : "https://picsum.photos/400/300"}
             alt="blog"
-            className=" object-contain h-full w-full"
+            className=" object-contain h-full w-full max-h-64"
           />
         </div>
-        <div className="flex flex-col">
-          <h4>{blog?.title}</h4>
-          <p>
+        <div className="flex flex-col ml-2 gap-y-2">
+          <h4>
+            {blog?.title.length <= 30
+              ? blog?.title.slice(0, 30)
+              : blog?.title.slice(0, 30) + "..."}
+          </h4>
+          <p className="opacity-70">
             {blog?.publish_date.slice(0, 10) +
               " " +
               blog?.publish_date.slice(11, 16)}
           </p>
           <p>
-            {blog?.content.length <= 75
-              ? blog?.content.slice(0, 75)
-              : blog?.content.slice(0, 75) + "..."}
+            {blog?.content.length <= 30
+              ? blog?.content.slice(0, 30)
+              : blog?.content.slice(0, 30) + "..."}
           </p>
         </div>
-        <div className="flex gap-x-2">
+        <div className="flex mt-2 mb-2 gap-x-2 ml-2">
           <img
             src={blog?.author?.image || "/assets/default.png"}
             className=" object-contain"
@@ -73,19 +91,19 @@ const BlogCard = ({ blog, fetchState, setFetchState }) => {
           <p>{blog?.author}</p>
         </div>
         <div className="flex gap-x-3">
-          <div className="flex items-center gap-x-1 likeBtnDiv">
+          <div className="flex items-center gap-x-1 ml-2">
             <span
               onClick={(e) => handleLike(e)}
-              className="cursor-pointer likeBtnDiv"
+              className="cursor-pointer "
               data-id={blog?.id}
             >
               {blogUserIdContains ? (
-                <MdFavorite className="text-red-800 likeBtnDiv" />
+                <MdFavorite className="text-red-800 " />
               ) : (
                 <MdFavoriteBorder />
               )}
             </span>
-            <p className="likeBtnDiv">{blog?.likes?.length}</p>
+            <p>{blog?.likes?.length}</p>
           </div>
           <div className="flex items-center gap-x-1">
             <span>

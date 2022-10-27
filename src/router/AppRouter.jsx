@@ -19,7 +19,6 @@ const AppRouter = () => {
         <Route path="/create_blog" element={<NewBlog />} />
         <Route path="/detail/:id" element={<BlogDetails />} />
         <Route path="/my-blogs/" element={<MyBlogs />} />
-        {/* <Route path="/deneme/" element={<Example />} /> */}
         <Route path="*" element={<div>Not Found</div>} />
       </Routes>
     </BrowserRouter>

@@ -1,36 +1,60 @@
 import React, { useEffect, useState } from "react";
 import MainLayout from "../../components/MainLayout";
-import { MdFavorite, MdVisibility } from "react-icons/md";
+import { MdFavorite, MdFavoriteBorder, MdVisibility } from "react-icons/md";
 import { BsChatLeft } from "react-icons/bs";
-import { useParams } from "react-router-dom";
-import { AddComment, singleBlogDetail } from "../../functions/mainBlogs";
+import { useNavigate, useParams } from "react-router-dom";
+import {
+  AddComment,
+  DeleteBlog,
+  LikeFunction,
+  mainBlogs,
+  singleBlogDetail,
+} from "../../functions/mainBlogs";
 import { useDispatch, useSelector } from "react-redux";
-import DefaultSpinner from "../../components/DefaultSpinner";
 import { toastWarnNotify } from "../../utils/customToastify";
 import { openModal } from "../../store/modal";
 import store from "../../store";
 
 const BlogDetails = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [newComment, setNewComment] = useState("");
   const [token, setToken] = useState("");
   const [userName, setUserName] = useState("");
   const dispatch = useDispatch();
-  const { loading, singleBlogData } = useSelector((state) => state.singleBlog);
-  //   const { open, data } = useSelector((state) => state.modal);
-  // console.log(open)
+  const { singleBlogData } = useSelector((state) => state.singleBlog);
+  const blog_id = id;
+  const [userId, setUserId] = useState("");
+  const [isValid, setIsValid] = useState(false);
+
+  const [fetchState, setFetchState] = useState(false);
+  const blogUserIdContains = singleBlogData?.likes?.filter((like) => like.user_id === userId).length > 0;
+  useEffect(() => {
+    dispatch(mainBlogs());
+  }, [fetchState]);
+
   useEffect(() => {
     if (JSON.parse(localStorage.getItem("loginCredentials"))) {
       setToken(JSON.parse(localStorage.getItem("loginCredentials")).key);
       setUserName(
         JSON.parse(localStorage.getItem("loginCredentials")).user.username
       );
+      setUserId(JSON.parse(localStorage.getItem("loginCredentials")).user.id);
     }
   }, []);
 
+  const handleLike = async (e) => {
+    if (!!token) {
+      dispatch(LikeFunction({ token, blog_id })).then(() =>
+        setFetchState(!fetchState)
+      );
+    } else {
+      toastWarnNotify("Please login");
+    }
+  };
   useEffect(() => {
     dispatch(singleBlogDetail({ id, token }));
-  }, []);
+  }, [fetchState]);
 
   const handleChange = (e) => {
     setNewComment(e.target.value);
@@ -54,25 +78,36 @@ const BlogDetails = () => {
     setNewComment("");
   };
   const handleOpenEditModal = () => {
-  
     store.dispatch(
       openModal({
         name: "blog-edit",
-        data: singleBlogData
+        data: singleBlogData,
       })
     );
   };
-
-  // if (loading) {
-  //   return <DefaultSpinner />;
-  // }
+  const handleBlogDelete = () => {
+    dispatch(DeleteBlog({ token, id })).then(() => navigate("/"));
+  };
+  function checkImage(url) {
+    var image = new Image();
+    image.onload = function () {
+      if (this.width > 0) {
+        setIsValid(true);
+      }
+    };
+    image.onerror = function () {
+      setIsValid(false);
+    };
+    image.src = url;
+  }
+  checkImage(singleBlogData?.image);
 
   return (
     <MainLayout>
       <div className="flex flex-col border border-green-400  max-w-3xl">
         <div className=" max-w-3xl ">
           <img
-            src={singleBlogData?.image}
+            src={isValid ? singleBlogData?.image : "https://picsum.photos/400/300"}
             alt="blogDetail"
             className=" object-contain h-full w-full"
           />
@@ -85,9 +120,7 @@ const BlogDetails = () => {
               singleBlogData?.publish_date?.slice(11, 16)}
           </p>
           <p>
-            {singleBlogData?.content?.length <= 75
-              ? singleBlogData?.content?.slice(0, 75)
-              : singleBlogData?.content?.slice(0, 75) + "..."}
+            {singleBlogData?.content}
           </p>
         </div>
         <div className="flex mt-2 mb-2 gap-x-2 ml-2">
@@ -102,8 +135,16 @@ const BlogDetails = () => {
         </div>
         <div className="flex gap-x-3 ml-2">
           <div className="flex items-center gap-x-1">
-            <span>
-              <MdFavorite className="text-red-800" />
+            <span
+              onClick={(e) => handleLike(e)}
+              className="cursor-pointer "
+              data-id={singleBlogData?.id}
+            >
+              {blogUserIdContains ? (
+                <MdFavorite className="text-red-800 " />
+              ) : (
+                <MdFavoriteBorder />
+              )}
             </span>
             <p>{singleBlogData?.likes?.length}</p>
           </div>
@@ -131,7 +172,10 @@ const BlogDetails = () => {
           >
             Edit
           </button>
-          <button className="rounded-full py-2 px-6 bg-indigo-600 font-montserrat text-btnGiris cursor-pointer font-semibold text-xs text-white">
+          <button
+            className="rounded-full py-2 px-6 bg-indigo-600 font-montserrat text-btnGiris cursor-pointer font-semibold text-xs text-white"
+            onClick={(e) => handleBlogDelete(e)}
+          >
             Delete
           </button>
         </div>
@@ -145,8 +189,8 @@ const BlogDetails = () => {
                 className="flex flex-col gap-y-2 border-b border-green-400"
                 key={id}
               >
-                <h6 className="text-[12px]">{comment.user}:</h6>
-                <p className="text-[11px] font-light">{comment.content}</p>
+                <h6 className="text-[12px] ml-1">{comment.user}:</h6>
+                <p className="text-[11px] font-light ml-3">{comment.content}</p>
               </div>
             );
           })}

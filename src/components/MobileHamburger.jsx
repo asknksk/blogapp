@@ -1,18 +1,25 @@
-import React, { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { navbarDropdownConstants } from "../constants/navbarDropdownConstants";
+import { logoutUser } from "../functions/auth";
 const MobileHamburger = ({ toggleDropdown, innerRef, setToggleDropdown }) => {
   const navigate = useNavigate();
-  // const dispatch = useDispatch();
-  // const token = JSON.parse(localStorage.getItem("loginCredentials"))?.result
-  //   .token;
+  const dispatch = useDispatch();
+  const [loginCredential, setLoginCredential] = useState("");
+  const [token, setToken] = useState("");
+  useEffect(() => {
+    if (JSON.parse(localStorage.getItem("loginCredentials"))) {
+      setLoginCredential(JSON.parse(localStorage.getItem("loginCredentials")));
+      setToken(loginCredential.key);
+    }
+  }, []);
   const handleLogout = (e) => {
     e.preventDefault();
-    // TODO: logout api yazildiktan sonra asagidaki yorum satiri kaldirilacak
-    //dispatch(logoutUser({ token, navigate }));
-  
+    dispatch(logoutUser({ token, navigate }));
+    setLoginCredential("");
+    setToken("");
   };
-
 
   return (
     <>
