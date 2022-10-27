@@ -11,7 +11,7 @@ export const singleBlogDetail = createAsyncThunk(
   async ({ id, token }) => {
     let res = await api.get(`blog/blog/${id}/`, {
       headers: {
-        Authorization: "Token " + token,
+        Authorization: "Token " + "8a1f1b1f99d5fc3b68544b3e01bf6dabaddd745f",
       },
     });
     if (res.status === 200) {
