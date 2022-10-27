@@ -3,6 +3,7 @@ import auth from "./auth";
 import blogs from "./blogs";
 import singleBlog from "./singleBlog";
 import likes from "./likes";
+import modal from "./modal";
 
 const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ const store = configureStore({
     blogs,
     singleBlog,
     likes,
+    modal,
   },
 });
 

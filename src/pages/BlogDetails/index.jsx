@@ -7,17 +7,24 @@ import { AddComment, singleBlogDetail } from "../../functions/mainBlogs";
 import { useDispatch, useSelector } from "react-redux";
 import DefaultSpinner from "../../components/DefaultSpinner";
 import { toastWarnNotify } from "../../utils/customToastify";
+import { openModal } from "../../store/modal";
+import store from "../../store";
 
 const BlogDetails = () => {
   const { id } = useParams();
   const [newComment, setNewComment] = useState("");
   const [token, setToken] = useState("");
+  const [userName, setUserName] = useState("");
   const dispatch = useDispatch();
   const { loading, singleBlogData } = useSelector((state) => state.singleBlog);
-
+  //   const { open, data } = useSelector((state) => state.modal);
+  // console.log(open)
   useEffect(() => {
     if (JSON.parse(localStorage.getItem("loginCredentials"))) {
       setToken(JSON.parse(localStorage.getItem("loginCredentials")).key);
+      setUserName(
+        JSON.parse(localStorage.getItem("loginCredentials")).user.username
+      );
     }
   }, []);
 
@@ -45,6 +52,15 @@ const BlogDetails = () => {
       }
     }
     setNewComment("");
+  };
+  const handleOpenEditModal = () => {
+  
+    store.dispatch(
+      openModal({
+        name: "blog-edit",
+        data: singleBlogData
+      })
+    );
   };
 
   // if (loading) {
@@ -104,7 +120,21 @@ const BlogDetails = () => {
             <p>{singleBlogData?.comment_count}</p>
           </div>
         </div>
-
+        <div
+          className={
+            singleBlogData?.author === userName ? "text-center mt-2" : "hidden"
+          }
+        >
+          <button
+            className="rounded-full py-2 px-6 bg-indigo-600 font-montserrat text-btnGiris cursor-pointer font-semibold text-xs text-white mr-3"
+            onClick={() => handleOpenEditModal()}
+          >
+            Edit
+          </button>
+          <button className="rounded-full py-2 px-6 bg-indigo-600 font-montserrat text-btnGiris cursor-pointer font-semibold text-xs text-white">
+            Delete
+          </button>
+        </div>
         <div className="flex flex-col gap-x-3 gap-y-3 mt-2 mb-3">
           <h4 className="font-normal text-lg border-b border-green-500 text-center">
             Comments

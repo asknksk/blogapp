@@ -1,4 +1,4 @@
-import { MdFavorite, MdVisibility } from "react-icons/md";
+import { MdFavorite, MdFavoriteBorder, MdVisibility } from "react-icons/md";
 import { BsChatLeft } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -15,7 +15,6 @@ const BlogCard = ({ blog, fetchState, setFetchState }) => {
   const blog_id = blog?.id;
   const blogUserIdContains =
     blog?.likes.filter((like) => like.user_id === userId).length > 0;
-  console.log(blogUserIdContains);
   useEffect(() => {
     if (JSON.parse(localStorage.getItem("loginCredentials"))) {
       setToken(JSON.parse(localStorage.getItem("loginCredentials")).key);
@@ -80,13 +79,11 @@ const BlogCard = ({ blog, fetchState, setFetchState }) => {
               className="cursor-pointer likeBtnDiv"
               data-id={blog?.id}
             >
-              <MdFavorite
-                className={
-                  blogUserIdContains
-                    ? "text-red-800 likeBtnDiv"
-                    : "text-white likeBtnDiv"
-                }
-              />
+              {blogUserIdContains ? (
+                <MdFavorite className="text-red-800 likeBtnDiv" />
+              ) : (
+                <MdFavoriteBorder />
+              )}
             </span>
             <p className="likeBtnDiv">{blog?.likes?.length}</p>
           </div>
